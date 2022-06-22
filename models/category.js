@@ -5,6 +5,10 @@ const categorySchema = new Schema({
   name: {
     type: String,
     require: true
+  },
+  icon: {
+    type: String,
+    default: 'fa-solid fa-comment-dollar'
   }
 })
 

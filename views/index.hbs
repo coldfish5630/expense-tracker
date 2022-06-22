@@ -1,1 +1,27 @@
-<h1>this is expense tracker</h1>
+<div class="w-25 d-flex justify-content-between mt-3 m-auto">
+  <small>Total Amount:</small>
+  <h1 class="text-danger d-inline">{{totalAmount}}</h1>
+</div>
+<ul class="list-group list-group-flush w-50 mt-5 m-auto">
+  {{#each record}}
+    <li class="list-group-item">
+      <div class="row">
+        <h1 class="{{this.icon}} col-sm-1"></h1>
+        <div class="col-sm-8">
+          <h4>{{this.name}}</h4>
+          <small>{{this.date}}</small>
+        </div>
+        <h4 class="col-sm-1 float-end">{{this.amount}}</h4>
+        <div class="col-sm-2">
+          <a class="btn btn-outline-success" href="./records/{{ this._id }}/edit">edit</a>
+          <form action="./records/{{ this._id }}?_method=DELETE" method="POST" style="display: inline;">
+            <button class="btn btn-outline-danger" type="submit">delete</button>
+          </form>
+        </div>
+      </div>
+    </li>
+  {{/each}}
+</ul>
+<div class="container d-flex justify-content-center">
+  <a href="./records/new" class="btn btn-outline-warning w-25 mt-5">新增支出</a>
+</div>

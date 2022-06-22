@@ -61,22 +61,26 @@ const SEED_RECORD = [
 ]
 
 db.once('open', async () => {
-  for await (const seedUser of SEED_USER.map(i => i)) {
-    const salt = await bcrypt.genSalt(10)
-    const hash = await bcrypt.hash(seedUser.password, salt)
-    const user = await User.create({
-      name: seedUser.name,
-      email: seedUser.email,
-      password: hash
-    })
-    for await (const seedRecord of SEED_RECORD.map(j => j)) {
-      if (seedRecord.user === user.name) {
-        seedRecord.userId = user._id
-        const cate = await Category.findOne({ name: seedRecord.category })
-        seedRecord.categoryId = cate._id
-        await Record.create(seedRecord)
+  try {
+    for await (const seedUser of SEED_USER.map(i => i)) {
+      const salt = await bcrypt.genSalt(10)
+      const hash = await bcrypt.hash(seedUser.password, salt)
+      const user = await User.create({
+        name: seedUser.name,
+        email: seedUser.email,
+        password: hash
+      })
+      for await (const seedRecord of SEED_RECORD.map(j => j)) {
+        if (seedRecord.user === user.name) {
+          seedRecord.userId = user._id
+          const cate = await Category.findOne({ name: seedRecord.category })
+          seedRecord.categoryId = cate._id
+          await Record.create(seedRecord)
+        }
       }
     }
+  } catch (err) {
+    console.log(err)
   }
   console.log('record done')
   process.exit()
