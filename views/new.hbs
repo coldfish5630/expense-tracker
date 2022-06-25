@@ -1,0 +1,35 @@
+<div class="container mt-3 mb-5">
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <form action="/records{{#if record}}/{{record._id}}?_method=PUT{{/if}}" method="post" id="form">
+                <div class="mb-3">
+                    <label for="name" class="form-label">名稱*：</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="請輸入項目名稱..." value="{{#if record}}{{record.name}}{{/if}}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="category" class="form-label">支出類別*：</label>
+                    <select name="categoryId" class="form-select" required>
+                        <option {{#notExist record}}{{selected}}{{/notExist}} value="">請選擇支出類別...</option>
+                        <option {{#compare record.categoryId '休閒娛樂'}}{{selected}}{{/compare}} value="休閒娛樂">休閒娛樂</option>
+                        <option {{#compare record.categoryId '餐飲食品'}}{{selected}}{{/compare}} value="餐飲食品">餐飲食品</option>
+                        <option {{#compare record.categoryId '家居物業'}}{{selected}}{{/compare}} value="家居物業">家居物業</option>
+                        <option {{#compare record.categoryId '交通出行'}}{{selected}}{{/compare}} value="交通出行">交通出行</option>
+                        <option {{#compare record.categoryId '其他'}}{{selected}}{{/compare}} value="其他">其他</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="amount" class="form-label">消費金額*：</label>
+                    <input type="number" class="form-control" id="amount" name="amount" placeholder="請輸入消費金額..." value="{{#if record}}{{record.amount}}{{/if}}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="date" class="form-label">日期*：</label>
+                    <input type="date" class="form-control" id="date" name="date" {{#if record}}value="{{record.date}}"{{/if}} {{#checkDate record}}value="{{date}}"{{/checkDate}} required>
+                </div>
+                <div class="col-4 d-flex justify-content-around m-auto">
+                    <button type="submit" class="btn btn-success" id="submitButton">{{#if record}}確認修改{{else}}新增{{/if}}</button>
+                    <a href="/" class="btn btn-secondary">{{#if record}}取消{{else}}返回{{/if}}</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
