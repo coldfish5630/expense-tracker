@@ -9,16 +9,24 @@ module.exports = app => {
   app.use(passport.session())
   passport.use(
     new LocalStrategy(
-      { usernameField: 'email' },
-      async (email, password, done) => {
+      { usernameField: 'email', passReqToCallback: true },
+      async (req, email, password, done) => {
         try {
           const user = await User.findOne({ email })
           if (!user) {
-            return done(null, false, { message: 'user not found' })
+            return done(
+              null,
+              false,
+              req.flash('warning_msg', '資料驗證失敗，請重新輸入')
+            )
           }
           const isMatch = await bcrypt.compare(password, user.password)
           if (!isMatch) {
-            return done(null, false, { message: 'wrong password' })
+            return done(
+              null,
+              false,
+              req.flash('warning_msg', 'Email或密碼錯誤，請重新輸入')
+            )
           }
           return done(null, user)
         } catch (err) {
