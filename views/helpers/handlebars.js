@@ -10,9 +10,17 @@ const hbshelper = {
       const date = new Date()
       const month = date.getMonth() + 1
       return options.fn({
-        date: `${date.getFullYear()}-${
-          month < 10 ? 0 : ''
-        }${month}-${date.getDate()}`
+        date: `${date.getFullYear()}-${month < 10 ? 0 : ''}${month}-${
+          date.getDate() < 10 ? 0 : ''
+        }${date.getDate()}`
+      })
+    } else {
+      const date = new Date(val)
+      const month = date.getMonth() + 1
+      return options.fn({
+        date: `${date.getFullYear()}／${month < 10 ? 0 : ''}${month}／${
+          date.getDate() < 10 ? 0 : ''
+        }${date.getDate()}`
       })
     }
   }

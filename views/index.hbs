@@ -9,7 +9,7 @@
         <h1 class="{{this.icon}} col-sm-1"></h1>
         <div class="col-sm-8">
           <h4>{{this.name}}</h4>
-          <small>{{this.date}}</small>
+          <small>{{#checkDate this.date}}{{date}}{{/checkDate}}</small>
         </div>
         <h4 class="col-sm-1 float-end">{{this.amount}}</h4>
         <div class="col-sm-2">
