@@ -10,14 +10,20 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-light bg-light">
-                <div class="container">
-                    <a class="navbar-brand" href="/">
-                        <i class="fa-solid fa-dollar-sign"></i>   
-                        家庭記帳本
+        <nav class="navbar navbar-light bg-info bg-gradient">
+                <div class="container w-50 m-auto">
+                    <a class="navbar-brand" href="/">                        
+                        <h1>
+                            <i class="fa-solid fa-dollar-sign"></i>
+                            {{#if isAuthenticated}}{{user.name}}的{{else}}家庭{{/if}}記帳本
+                        </h1>
                     </a>
                     <div class="btn-group" role="group">
-                    <a href="/users/login" class="btn btn-outline-warning">Login</a>
+                    {{#if isAuthenticated}}
+                    <a href="/users/logout" class="btn btn-outline-dark">Logout</a>
+                    {{else}}
+                    <a href="/users/login" class="btn btn-outline-dark">Login</a>
+                    {{/if}}
                     </div>
                 </div>
             </nav>
