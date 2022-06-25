@@ -63,6 +63,11 @@ const SEED_RECORD = [
 db.once('open', async () => {
   try {
     for await (const seedUser of SEED_USER.map(i => i)) {
+      const checkUser = await User.findOne({ email: seedUser.email })
+      if (checkUser) {
+        console.log(`${checkUser.email}email already exist`)
+        return
+      }
       const salt = await bcrypt.genSalt(10)
       const hash = await bcrypt.hash(seedUser.password, salt)
       const user = await User.create({
