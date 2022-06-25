@@ -1,3 +1,19 @@
+<div class="dropdown d-flex justify-content-center m-auto">
+  <button class="btn btn-outline-dark dropdown-toggle w-25 mt-5" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    {{#if this.selected}}
+    {{this.selected}}
+    {{else}}
+    排序方式
+    {{/if}}
+  </button>
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item" href="/records/sort?type=date:asc:日期(A-Z)">日期(A-Z)</a></li>
+      <li><a class="dropdown-item" href="/records/sort?type=date:desc:日期(Z-A)">日期(Z-A)</a></li>
+      <li><a class="dropdown-item" href="/records/sort?type=amount:asc:金額(A-Z)">金額(A-Z)</a></li>
+      <li><a class="dropdown-item" href="/records/sort?type=amount:desc:金額(Z-A)">金額(Z-A)</a></li>
+      <li><a class="dropdown-item" href="/records/sort?type=categoryId:asc:類別">類別</a></li>
+    </ul>
+</div>
 <div class="w-25 d-flex justify-content-between mt-3 m-auto">
   <small>Total Amount:</small>
   <h1 class="text-danger d-inline">{{totalAmount}}</h1>
@@ -13,8 +29,8 @@
         </div>
         <h4 class="col-sm-1 float-end">{{this.amount}}</h4>
         <div class="col-sm-2">
-          <a class="btn btn-outline-success" href="./records/{{ this._id }}/edit">edit</a>
-          <form action="./records/{{ this._id }}?_method=DELETE" method="POST" style="display: inline;">
+          <a class="btn btn-outline-success" href="/records/{{ this._id }}/edit">edit</a>
+          <form action="/records/{{ this._id }}?_method=DELETE" method="POST" style="display: inline;">
             <button class="btn btn-outline-danger" type="submit">delete</button>
           </form>
         </div>
@@ -23,5 +39,5 @@
   {{/each}}
 </ul>
 <div class="container d-flex justify-content-center">
-  <a href="./records/new" class="btn btn-outline-warning w-25 mt-5">新增支出</a>
+  <a href="/records/new" class="btn btn-outline-warning w-25 mt-5">新增支出</a>
 </div>

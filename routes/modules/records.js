@@ -20,6 +20,27 @@ router.post('/', async (req, res) => {
   }
 })
 
+router.get('/sort', async (req, res) => {
+  try {
+    const sortType = req.query.type.split(':')
+    const sort = sortType[1] === 'asc' ? sortType[0] : '-' + sortType[0]
+    const selected = sortType[2]
+    const record = await Record.find()
+      .lean()
+      .sort(sort)
+    const totalAmount = record
+      .map(record => record.amount)
+      .reduce((a, b) => a + b, 0)
+    for await (const data of record.map(i => i)) {
+      const cate = await Category.findById(data.categoryId)
+      data.icon = cate.icon
+    }
+    res.render('index', { record, selected, totalAmount })
+  } catch (err) {
+    console.log(err)
+  }
+})
+
 router.get('/:id/edit', async (req, res) => {
   try {
     const _id = req.params.id
