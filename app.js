@@ -2,6 +2,7 @@ if (process.env.NODE !== 'production') {
   require('dotenv').config()
 }
 const express = require('express')
+const session = require('express-session')
 const methodOverride = require('method-override')
 const routes = require('./routes')
 require('./config/mongoose')
@@ -18,6 +19,13 @@ app.engine(
   })
 )
 app.set('view engine', 'hbs')
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false
+  })
+)
 app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
 
