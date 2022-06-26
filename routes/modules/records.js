@@ -42,6 +42,11 @@ router.get('/sort', async (req, res) => {
     for await (const data of record) {
       const cate = await Category.findById(data.categoryId)
       data.icon = cate.icon
+      const d = new Date(data.date)
+      const m = d.getMonth() + 1
+      data.date = `${d.getFullYear()}／${m < 10 ? 0 : ''}${m}／${
+        d.getDate() < 10 ? 0 : ''
+      }${d.getDate()}`
     }
     res.render('index', { record, selected, totalAmount })
   } catch (err) {
@@ -62,7 +67,14 @@ router.get('/filter', async (req, res) => {
     const totalAmount = record
       .map(record => record.amount)
       .reduce((a, b) => a + b, 0)
-    record.forEach(i => (i.icon = category.icon))
+    record.forEach(data => {
+      data.icon = category.icon
+      const d = new Date(data.date)
+      const m = d.getMonth() + 1
+      data.date = `${d.getFullYear()}／${m < 10 ? 0 : ''}${m}／${
+        d.getDate() < 10 ? 0 : ''
+      }${d.getDate()}`
+    })
     res.render('index', { record, selected, totalAmount, filter: name })
   } catch (err) {
     console.log(err)
