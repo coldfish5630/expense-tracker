@@ -4,7 +4,12 @@ const Category = require('../../models/category')
 
 router.get('/', async (req, res) => {
   try {
-    const record = await Record.find().lean()
+    const userId = req.user._id
+    const sort = req.session.sort
+    const selected = req.session.selected
+    const record = await Record.find({ userId })
+      .lean()
+      .sort(sort)
     const totalAmount = record
       .map(record => record.amount)
       .reduce((a, b) => a + b, 0)
@@ -12,7 +17,7 @@ router.get('/', async (req, res) => {
       const cate = await Category.findById(data.categoryId)
       data.icon = cate.icon
     }
-    res.render('index', { record, totalAmount })
+    res.render('index', { record, totalAmount, selected })
   } catch (err) {
     console.log(err)
   }

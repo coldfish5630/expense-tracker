@@ -10,7 +10,7 @@ router.get('/new', (req, res) => {
 router.post('/', async (req, res) => {
   try {
     const body = req.body
-    body.userId = '62b1ea356a56ca330186f4be'
+    body.userId = req.user._id
     const category = await Category.findOne({ name: body.categoryId })
     body.categoryId = category._id
     await Record.create(body)
@@ -22,10 +22,13 @@ router.post('/', async (req, res) => {
 
 router.get('/sort', async (req, res) => {
   try {
+    const userId = req.user._id
     const sortType = req.query.type.split(':')
     const sort = sortType[1] === 'asc' ? sortType[0] : '-' + sortType[0]
     const selected = sortType[2]
-    const record = await Record.find()
+    req.session.sort = sort
+    req.session.selected = selected
+    const record = await Record.find({ userId })
       .lean()
       .sort(sort)
     const totalAmount = record
@@ -43,8 +46,9 @@ router.get('/sort', async (req, res) => {
 
 router.get('/:id/edit', async (req, res) => {
   try {
+    const userId = req.user._id
     const _id = req.params.id
-    const record = await Record.findOne({ _id }).lean()
+    const record = await Record.findOne({ _id, userId }).lean()
     const category = await Category.findOne({ _id: record.categoryId })
     record.categoryId = category.name
     const date = new Date(record.date)
@@ -60,11 +64,12 @@ router.get('/:id/edit', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
   try {
+    const userId = req.user._id
     const _id = req.params.id
     let { name, amount, categoryId, date } = req.body
     const category = await Category.findOne({ name: categoryId })
     categoryId = category._id
-    const record = await Record.findOne({ _id })
+    const record = await Record.findOne({ _id, userId })
     record.name = name
     record.amount = amount
     record.categoryId = categoryId
@@ -78,8 +83,9 @@ router.put('/:id', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
   try {
+    const userId = req.user._id
     const _id = req.params.id
-    const record = await Record.findOne({ _id })
+    const record = await Record.findOne({ _id, userId })
     await record.remove()
     res.redirect('/')
   } catch (err) {
