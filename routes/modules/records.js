@@ -44,6 +44,26 @@ router.get('/sort', async (req, res) => {
   }
 })
 
+router.get('/filter', async (req, res) => {
+  try {
+    const userId = req.user._id
+    const name = req.query.category
+    const sort = req.session.sort
+    const selected = req.session.selected
+    const category = await Category.findOne({ name })
+    const record = await Record.find({ userId, categoryId: category._id })
+      .lean()
+      .sort(sort)
+    const totalAmount = record
+      .map(record => record.amount)
+      .reduce((a, b) => a + b, 0)
+    record.forEach(i => (i.icon = category.icon))
+    res.render('index', { record, selected, totalAmount, filter: name })
+  } catch (err) {
+    console.log(err)
+  }
+})
+
 router.get('/:id/edit', async (req, res) => {
   try {
     const userId = req.user._id

@@ -1,7 +1,27 @@
-<div class="dropdown d-flex justify-content-center m-auto">
-  <button class="btn btn-outline-dark dropdown-toggle w-25 mt-5" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-    {{#if this.selected}}
-    {{this.selected}}
+<div class="container d-flex justify-content-evenly w-50 mt-5">
+<div class="dropdown d-flex justify-content-center align-items-center">
+  <p class="d-inline-block mb-0 fs-4">篩選方式：</p>
+  <button class="btn btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    {{#if filter}}
+    {{filter}}
+    {{else}}
+    全部類別
+    {{/if}}
+  </button>
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item" href="/records/filter?category=家居物業">家居物業</a></li>
+      <li><a class="dropdown-item" href="/records/filter?category=交通出行">交通出行</a></li>
+      <li><a class="dropdown-item" href="/records/filter?category=休閒娛樂">休閒娛樂</a></li>
+      <li><a class="dropdown-item" href="/records/filter?category=餐飲食品">餐飲食品</a></li>
+      <li><a class="dropdown-item" href="/records/filter?category=其他">其他</a></li>
+      <li><a class="dropdown-item" href="/">全部類別</a></li>
+    </ul>
+</div>
+<div class="dropdown d-flex justify-content-center align-items-center">
+  <p class="d-inline-block mb-0 fs-4">排序方式：</p>
+  <button class="btn btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    {{#if selected}}
+    {{selected}}
     {{else}}
     排序方式
     {{/if}}
@@ -14,6 +34,7 @@
       <li><a class="dropdown-item" href="/records/sort?type=categoryId:asc:類別">類別</a></li>
     </ul>
 </div>
+</div>
 <div class="w-25 d-flex justify-content-between mt-3 m-auto">
   <small>Total Amount:</small>
   <h1 class="text-danger d-inline">{{totalAmount}}</h1>
@@ -21,13 +42,13 @@
 <ul class="list-group list-group-flush w-50 mt-5 m-auto rounded-3 shadow record-list">
   {{#each record}}
     <li class="list-group-item">
-      <div class="row">
-        <h1 class="{{this.icon}} col-sm-1"></h1>
-        <div class="col-sm-8">
+      <div class="row align-items-center">
+        <h1 class="{{this.icon}} col-sm-1 mb-0"></h1>
+        <div class="col-sm-7">
           <h4>{{this.name}}</h4>
           <small>{{#checkDate this.date}}{{date}}{{/checkDate}}</small>
         </div>
-        <h4 class="col-sm-1 float-end">{{this.amount}}</h4>
+        <h3 class="col-sm-2 text-end mb-0">{{this.amount}}</h3>
         <div class="col-sm-2">
           <a class="btn btn-outline-success" href="/records/{{ this._id }}/edit">edit</a>
           <form action="/records/{{ this._id }}?_method=DELETE" method="POST" style="display: inline;">
