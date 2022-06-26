@@ -39,15 +39,27 @@ router.get('/sort', async (req, res) => {
     const totalAmount = record
       .map(record => record.amount)
       .reduce((a, b) => a + b, 0)
-    for await (const data of record) {
-      const cate = await Category.findById(data.categoryId)
-      data.icon = cate.icon
+    const category = await Category.find()
+    record.forEach(data => {
+      const cate = category.filter(
+        cate => data.categoryId.toString() === cate._id.toString()
+      )
+      data.icon = cate[0].icon
       const d = new Date(data.date)
       const m = d.getMonth() + 1
       data.date = `${d.getFullYear()}／${m < 10 ? 0 : ''}${m}／${
         d.getDate() < 10 ? 0 : ''
       }${d.getDate()}`
-    }
+    })
+    // for await (const data of record) {
+    //   const cate = await Category.findById(data.categoryId)
+    //   data.icon = cate.icon
+    //   const d = new Date(data.date)
+    //   const m = d.getMonth() + 1
+    //   data.date = `${d.getFullYear()}／${m < 10 ? 0 : ''}${m}／${
+    //     d.getDate() < 10 ? 0 : ''
+    //   }${d.getDate()}`
+    // }
     res.render('index', { record, selected, totalAmount })
   } catch (err) {
     console.log(err)
