@@ -7,58 +7,10 @@ const User = require('../user')
 const Record = require('../record')
 const Category = require('../category')
 
+const SEED_USER = require('./SEED.json').seedUser
+const SEED_RECORD = require('./SEED.json').seedRecord
+
 const db = require('../../config/mongoose')
-
-const SEED_USER = [
-  {
-    name: '廣志',
-    email: 'user1@example.com',
-    password: '12345678'
-  },
-  {
-    name: '小新',
-    email: 'user2@example.com',
-    password: '12345678'
-  }
-]
-
-const SEED_RECORD = [
-  {
-    name: '午餐',
-    amount: 90,
-    category: '餐飲食品',
-    user: '廣志',
-    date: '2022-06-19'
-  },
-  {
-    name: '晚餐',
-    amount: 200,
-    category: '餐飲食品',
-    user: '廣志',
-    date: '2022-06-19'
-  },
-  {
-    name: '捷運',
-    amount: 60,
-    category: '交通出行',
-    user: '廣志',
-    date: '2022-06-20'
-  },
-  {
-    name: '電影：驚奇隊長',
-    amount: 330,
-    category: '休閒娛樂',
-    user: '小新',
-    date: '2022-06-20'
-  },
-  {
-    name: '房租',
-    amount: 25500,
-    category: '家居物業',
-    user: '廣志',
-    date: '2022-06-01'
-  }
-]
 
 db.once('open', async () => {
   try {
