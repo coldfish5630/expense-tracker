@@ -14,7 +14,7 @@ const db = require('../../config/mongoose')
 
 db.once('open', async () => {
   try {
-    for await (const seedUser of SEED_USER.map(i => i)) {
+    for await (const seedUser of SEED_USER) {
       const checkUser = await User.findOne({ email: seedUser.email })
       if (checkUser) {
         console.log(`${checkUser.email}email already exist`)
@@ -27,7 +27,7 @@ db.once('open', async () => {
         email: seedUser.email,
         password: hash
       })
-      for await (const seedRecord of SEED_RECORD.map(j => j)) {
+      for await (const seedRecord of SEED_RECORD) {
         if (seedRecord.user === user.name) {
           seedRecord.userId = user._id
           const cate = await Category.findOne({ name: seedRecord.category })

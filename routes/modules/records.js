@@ -4,7 +4,12 @@ const Record = require('../../models/record')
 const Category = require('../../models/category')
 
 router.get('/new', (req, res) => {
-  return res.render('new')
+  const d = new Date()
+  const m = d.getMonth() + 1
+  const date = `${d.getFullYear()}-${m < 10 ? 0 : ''}${m}-${
+    d.getDate() < 10 ? 0 : ''
+  }${d.getDate()}`
+  return res.render('new', { date })
 })
 
 router.post('/', async (req, res) => {
@@ -34,7 +39,7 @@ router.get('/sort', async (req, res) => {
     const totalAmount = record
       .map(record => record.amount)
       .reduce((a, b) => a + b, 0)
-    for await (const data of record.map(i => i)) {
+    for await (const data of record) {
       const cate = await Category.findById(data.categoryId)
       data.icon = cate.icon
     }
@@ -71,11 +76,11 @@ router.get('/:id/edit', async (req, res) => {
     const record = await Record.findOne({ _id, userId }).lean()
     const category = await Category.findOne({ _id: record.categoryId })
     record.categoryId = category.name
-    const date = new Date(record.date)
-    const month = date.getMonth() + 1
-    record.date = `${date.getFullYear()}-${month < 10 ? 0 : ''}${month}-${
-      date.getDate() < 10 ? 0 : ''
-    }${date.getDate()}`
+    const d = new Date(record.date)
+    const m = d.getMonth() + 1
+    record.date = `${d.getFullYear()}-${m < 10 ? 0 : ''}${m}-${
+      d.getDate() < 10 ? 0 : ''
+    }${d.getDate()}`
     res.render('new', { record })
   } catch (err) {
     console.log(err)
