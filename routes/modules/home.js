@@ -25,15 +25,6 @@ router.get('/', async (req, res) => {
         d.getDate() < 10 ? 0 : ''
       }${d.getDate()}`
     })
-    // for await (const data of record) {
-    //   const cate = await Category.findById(data.categoryId)
-    //   data.icon = cate.icon
-    //   const d = new Date(data.date)
-    //   const m = d.getMonth() + 1
-    //   data.date = `${d.getFullYear()}／${m < 10 ? 0 : ''}${m}／${
-    //     d.getDate() < 10 ? 0 : ''
-    //   }${d.getDate()}`
-    // }
 
     res.render('index', { record, totalAmount, selected })
   } catch (err) {
